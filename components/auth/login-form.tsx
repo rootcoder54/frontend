@@ -75,7 +75,7 @@ export function LoginForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="shadow-md w-[500px] max-w-sm">
+      <Card className="shadow-md w-[450px] md:w-[800px] max-w-md">
         {isPending && (
           <CardHeader className="text-center flex flex-col items-center justify-center p-9">
             <CardTitle className="text-xl">Connexion</CardTitle>

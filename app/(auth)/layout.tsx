@@ -17,7 +17,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       <body
         className={`${font.className} antialiased`}
       >
-        <div className="bg-zinc-400 min-h-screen flex flex-col items-center justify-center">
+        <div className="bg-zinc-200 min-h-screen flex flex-col items-center justify-center">
           {children}
         </div>
       </body>
