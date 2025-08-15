@@ -52,9 +52,13 @@ export function LoginForm({
     setError("");
     startTransition(() => {
       login(values.username, values.password).then((data) => {
-        console.log(data)
-        if (data !== undefined) {
-          setError("");
+        console.log(data);
+        if (data.ok) {
+          window.location.href = "/";
+        } else {
+          const res = data.json();
+          console.log(res);
+          setError("erreur");
         }
       });
     });
@@ -81,12 +85,8 @@ export function LoginForm({
         {!isPending && (
           <>
             <CardHeader className="text-center">
-              <CardTitle className="text-xl">
-                🔐 Bienvenue Sur Shoper
-              </CardTitle>
-              <CardDescription>
-                
-              </CardDescription>
+              <CardTitle className="text-xl">🔐 Bienvenue Sur Shoper</CardTitle>
+              <CardDescription></CardDescription>
             </CardHeader>
             <CardContent>
               <Form {...form}>
