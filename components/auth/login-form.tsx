@@ -28,6 +28,7 @@ import { loginSchema } from "./shema";
 import { Spinner } from "../features/spinner";
 import FormError from "./form-error";
 import { login } from "@/action/auth/login";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({
   className,
@@ -37,6 +38,8 @@ export function LoginForm({
 
   const [typePassword, setTypePassword] = useState("password");
   const [showPassword, setShowPassword] = useState(false);
+
+  const router = useRouter();
 
   const [isPending, startTransition] = useTransition();
 
@@ -53,12 +56,13 @@ export function LoginForm({
     startTransition(() => {
       login(values.username, values.password).then((data) => {
         console.log(data);
-        if (data.ok) {
-          window.location.href = "/";
+        if (data === null) {
+          setError("Email or password is incorrect.");
         } else {
-          const res = data.json();
-          console.log(res);
-          setError("erreur");
+          localStorage.setItem("token", data.token);
+          console.log("Login successful");
+          console.log("Token received:", data.token);
+          router.push("/");
         }
       });
     });
