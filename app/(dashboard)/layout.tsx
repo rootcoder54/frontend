@@ -16,7 +16,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         console.log("Utilisateur connecté :", data.payload);
       }
     });
-  }, []);
+  }, [router]);
   return (
     <SidebarProvider
       style={
