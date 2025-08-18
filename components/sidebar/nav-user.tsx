@@ -31,11 +31,11 @@ export function NavUser() {
   const { isMobile } = useSidebar();
   const [user, setuser] = useState<{
     name: string;
-    email: string;
+    username: string;
     avatar: string;
   }>({
     name: "",
-    email: "",
+    username: "",
     avatar: ""
   });
   useEffect(() => {
@@ -45,8 +45,12 @@ export function NavUser() {
       } else {
         setuser((prevUser) => ({
           ...prevUser,
-          name: `${data.payload.user.firstName} ${data.payload.user.lastName}`,
-          email: data.payload.user.username,
+          name: `${
+            data.payload.user.firstName ? data.payload.user.firstName : "Fofana"
+          } ${
+            data.payload.user.lastName ? data.payload.user.lastName : "Bassirou"
+          }`,
+          username: data.payload.user.username,
           avatar: ""
         }));
       }
@@ -68,7 +72,7 @@ export function NavUser() {
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
                 <span className="text-muted-foreground truncate text-xs">
-                  {user.email}
+                  {user.username}
                 </span>
               </div>
               <IconDotsVertical className="ml-auto size-4" />
@@ -89,7 +93,7 @@ export function NavUser() {
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
                   <span className="text-muted-foreground truncate text-xs">
-                    {user.email}
+                    {user.username}
                   </span>
                 </div>
               </div>
