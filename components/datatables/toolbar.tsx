@@ -30,7 +30,7 @@ interface DataTableToolbarProps<TData> {
   selectlinks?: {
     name: string;
     icon: React.ReactNode;
-    lien: string;
+    action: (id: string) => void;
     className?:
       | "link"
       | "default"
@@ -129,22 +129,21 @@ function DataToolBar<TData>({
             <span>1 sélectionné</span>
             {selectlinks &&
               selectlinks.map((link) => (
-                <Link key={link.lien} href={`${link.lien}/${id}`}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant={link.className}
-                        size={"icon"}
-                        className="size-8"
-                      >
-                        {link.icon}
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{link.name}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </Link>
+                <Tooltip key={link.name}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant={link.className}
+                      size={"icon"}
+                      className="size-8"
+                      onClick={() => link.action(id)}
+                    >
+                      {link.icon}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{link.name}</p>
+                  </TooltipContent>
+                </Tooltip>
               ))}
           </div>
         )}

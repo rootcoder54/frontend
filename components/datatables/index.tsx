@@ -47,7 +47,7 @@ interface DataTableProps<TData, TValue> {
   selectlinks?: {
     name: string;
     icon: React.ReactNode;
-    lien: string;
+    action: (id: string) => void;
     className?:
       | "link"
       | "default"

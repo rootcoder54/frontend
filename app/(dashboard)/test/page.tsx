@@ -7,6 +7,7 @@ import { getProduits } from "@/action/produits/getProduits";
 import { getToken } from "@/lib/getToken";
 import { Produit } from "@/types/Produit";
 import { useEffect, useState } from "react";
+import { useDeleteProduitModal } from "@/hooks/modals/produit/useDeleteProduit";
 
 const PageTest = () => {
   const [token, settoken] = useState("");
@@ -20,6 +21,9 @@ const PageTest = () => {
       return data;
     }
   });
+  const deleteProduit = useDeleteProduitModal();
+
+  
   if (!produits) return <span>En cours</span>;
   const columns = buildColumns(produits);
   console.log(produits);
@@ -36,20 +40,20 @@ const PageTest = () => {
           {
             name: "Ajouter",
             icon: <PlusIcon />,
-            lien: "/add",
+            lien: "/add"
           }
         ]}
         selectlinks={[
           {
             name: "Editer",
             icon: <FilePenLine />,
-            lien: "person/edite",
+            action: () => deleteProduit.onOpen("id"),
             className: "ghost"
           },
           {
             name: "Supprimer",
             icon: <Trash2 />,
-            lien: "/person/delete",
+            action: () => deleteProduit.onOpen("id"),
             className: "ghost"
           }
         ]}

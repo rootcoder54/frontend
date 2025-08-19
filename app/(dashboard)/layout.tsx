@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { QueryProvider } from "@/components/provider/query-provider";
+import { ModalProvider } from "@/components/provider/modal-provider";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -30,6 +31,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       >
         <AppSidebar variant="inset" />
         <SidebarInset>{children}</SidebarInset>
+        <ModalProvider />
       </SidebarProvider>
     </QueryProvider>
   );
