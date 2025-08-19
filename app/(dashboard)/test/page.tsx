@@ -1,56 +1,45 @@
 "use client";
 import { DataTable } from "@/components/datatables";
 import { buildColumns } from "@/components/datatables/columns";
-import { Delete, Edit2, PlusCircle } from "lucide-react";
+import { Delete, Edit2, PlusIcon } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getProduits } from "@/action/produits/getProduits";
+import { getToken } from "@/lib/getToken";
+import { Produit } from "@/types/Produit";
+import { useEffect, useState } from "react";
 
 const PageTest = () => {
-  const data = [
-    {
-      id: "65652652652652",
-      nom: "bassirou",
-      prenom: "fofana",
-      poste: "developpeur",
-      adresse: "kalaban-coura"
-    },
-    {
-      id: "fghfh52626",
-      nom: "Oumar",
-      prenom: "Ali",
-      poste: "Assistance",
-      adresse: "Aci 200"
-    },
-    {
-      id: "dfgdf8456dfgdg",
-      nom: "Awa",
-      prenom: "Koné",
-      poste: "Etudiant",
-      adresse: "Niamakoro"
-    },
-    {
-      id: "ht8dfd59865",
-      nom: "Moussa",
-      prenom: "Coulibaly",
-      poste: "Chauffeur",
-      adresse: "Niamakoro"
+  const [token, settoken] = useState("");
+  useEffect(() => {
+    settoken(getToken());
+  }, []);
+  const { data: produits } = useQuery<Produit[]>({
+    queryKey: ["produit"],
+    queryFn: async () => {
+      const data = await getProduits(token);
+      return data;
     }
-  ];
-  const columns = buildColumns(data);
+  });
+  if (!produits) return <span>En cours</span>;
+  const columns = buildColumns(produits);
+  console.log(produits);
 
   return (
     <div className="p-9">
       page test
       <DataTable
         columns={columns}
-        data={data}
-        searchId="poste"
-        searchPlaceholder="Rechercher le poste"
-        selectlinks={[
+        data={produits}
+        searchId="nom"
+        searchPlaceholder="Rechercher le nom"
+        links={[
           {
-            name: "add",
-            icon: <PlusCircle />,
-            lien: "/person/add",
-            className: "bg-blue-500 hover:bg-blue-400"
-          },
+            name: "Ajouter",
+            icon: <PlusIcon />,
+            lien: "/add"
+          }
+        ]}
+        selectlinks={[
           { name: "editer", icon: <Edit2 />, lien: "person/edite" },
           {
             name: "delete",
@@ -58,6 +47,19 @@ const PageTest = () => {
             lien: "/person/delete",
             className: "bg-red-600 hover:bg-red-500"
           }
+        ]}
+        hideList={[
+          "categorieId",
+          "shopId",
+          "shop",
+          "categorie",
+          "fournisseur",
+          "images",
+          "commande",
+          "mouvements",
+          "createdAt",
+          "updatedAt",
+          "fournisseurId"
         ]}
       />
     </div>

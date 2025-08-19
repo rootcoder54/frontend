@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Table } from "@tanstack/react-table";
-import { PlusIcon, X } from "lucide-react";
+import { X } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
@@ -14,6 +14,12 @@ interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   searchId?: string;
   searchPlaceholder?: string;
+  links?: {
+    name: string;
+    icon: React.ReactNode;
+    lien: string;
+    className?: string;
+  }[];
   selectlinks?: {
     name: string;
     icon: React.ReactNode;
@@ -26,6 +32,7 @@ function DataToolBar<TData>({
   table,
   searchId,
   searchPlaceholder,
+  links,
   selectlinks
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -77,12 +84,14 @@ function DataToolBar<TData>({
                 <X />
               </Button>
             )}
-            <Link href={`/requete/add`}>
-              <Button size={"sm"}>
-                <PlusIcon />
-                Ajouter
-              </Button>
-            </Link>
+            {links &&
+              links.map((link) => (
+                <Link key={link.lien} href={`${link.lien}/${id}`}>
+                  <Button className={link.className}>
+                    {link.icon} {link.name}
+                  </Button>
+                </Link>
+              ))}
           </div>
         ) : (
           <div className="flex flex-row items-center justify-center gap-1 rounded-lg bg-zinc-300/30 px-4 py-2">

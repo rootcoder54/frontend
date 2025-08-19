@@ -22,7 +22,7 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import DataToolBar from "./toolbar";
 
 interface DataTableProps<TData, TValue> {
@@ -31,12 +31,19 @@ interface DataTableProps<TData, TValue> {
   notData?: string;
   searchId?: string;
   searchPlaceholder?: string;
+  links?: {
+    name: string;
+    icon: React.ReactNode;
+    lien: string;
+    className?: string;
+  }[];
   selectlinks?: {
     name: string;
     icon: React.ReactNode;
     lien: string;
     className?: string;
   }[];
+  hideList?: string[];
 }
 
 export function DataTable<TData, TValue>({
@@ -45,23 +52,31 @@ export function DataTable<TData, TValue>({
   notData,
   searchId,
   searchPlaceholder,
-  selectlinks
+  links,
+  selectlinks,
+  hideList = []
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+
+  const initialVisibility: VisibilityState = hideList.reduce(
+    (acc, key) => ({ ...acc, [key]: false }),
+    {}
+  );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({
-      id: false
+      id: false,
+      ...initialVisibility
     });
 
   const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting,
-    enableRowSelection: true,
+    //enableRowSelection: true,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -89,31 +104,21 @@ export function DataTable<TData, TValue>({
   });
 
   //const columnsf = React.useMemo(() => buildColumns(data), [data]);
-  const rowSelected = table.getState().rowSelection;
-  const [id, setId] = useState("");
-  const selectedRowsData = table
-    .getRowModel()
-    .rows.filter((row) => rowSelected[row.id]);
-  useEffect(() => {
-    selectedRowsData.forEach((row) => {
-      const rowData = row.original as { id: string & unknown };
-      setId(rowData.id);
-    });
-  }, [selectedRowsData]);
 
   return (
     <div className="overflow-hidden">
-      {id}
+      {/*id*/}
       <div>
         <DataToolBar
           table={table}
           searchId={searchId}
           searchPlaceholder={searchPlaceholder}
           selectlinks={selectlinks}
+          links={links}
         />
       </div>
-      <Table>
-        <TableHeader>
+      <Table className="border-y">
+        <TableHeader className="bg-zinc-600/20">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -136,7 +141,11 @@ export function DataTable<TData, TValue>({
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
+                className="cursor-pointer"
                 data-state={row.getIsSelected() && "selected"}
+                onClick={() => {
+                  table.setRowSelection({ [row.id]: true });
+                }}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
