@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteProduit } from "@/action/produits/deleteProduits";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,11 +12,23 @@ import {
   AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import { useDeleteProduitModal } from "@/hooks/modals/produit/useDeleteProduit";
+import { getToken } from "@/lib/getToken";
+import { useEffect, useState } from "react";
 
 export function DeleteProduit() {
   const id = useDeleteProduitModal((state) => state.id);
   const isOpen = useDeleteProduitModal((state) => state.isOpen);
   const onClose = useDeleteProduitModal((state) => state.onClose);
+  const [token, settoken] = useState("");
+  useEffect(() => {
+    settoken(getToken());
+  }, []);
+
+  const supprimer = () => {
+    deleteProduit(id, token).then((result) => {
+      console.log(result);
+    });
+  };
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
@@ -30,7 +43,7 @@ export function DeleteProduit() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Annuler</AlertDialogCancel>
-          <AlertDialogAction>Supprimer</AlertDialogAction>
+          <AlertDialogAction onClick={supprimer}>Supprimer</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

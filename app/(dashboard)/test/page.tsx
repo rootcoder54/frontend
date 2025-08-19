@@ -8,9 +8,11 @@ import { getToken } from "@/lib/getToken";
 import { Produit } from "@/types/Produit";
 import { useEffect, useState } from "react";
 import { useDeleteProduitModal } from "@/hooks/modals/produit/useDeleteProduit";
+import { useSearchParams } from "next/navigation";
 
 const PageTest = () => {
   const [token, settoken] = useState("");
+  const [id, setId] = useState("");
   useEffect(() => {
     settoken(getToken());
   }, []);
@@ -23,7 +25,14 @@ const PageTest = () => {
   });
   const deleteProduit = useDeleteProduitModal();
 
-  
+  const searchParams = useSearchParams();
+  const search = searchParams.get("id");
+  useEffect(() => {
+    if (search) {
+      setId(search);
+    }
+  }, [search, id]);
+
   if (!produits) return <span>En cours</span>;
   const columns = buildColumns(produits);
   console.log(produits);
@@ -47,13 +56,13 @@ const PageTest = () => {
           {
             name: "Editer",
             icon: <FilePenLine />,
-            action: () => deleteProduit.onOpen("id"),
+            action: () => deleteProduit.onOpen(id),
             className: "ghost"
           },
           {
             name: "Supprimer",
             icon: <Trash2 />,
-            action: () => deleteProduit.onOpen("id"),
+            action: () => deleteProduit.onOpen(id),
             className: "ghost"
           }
         ]}

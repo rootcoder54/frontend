@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/table";
 import React from "react";
 import DataToolBar from "./toolbar";
+import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -118,6 +119,7 @@ export function DataTable<TData, TValue>({
   });
 
   //const columnsf = React.useMemo(() => buildColumns(data), [data]);
+  const router = useRouter();
 
   return (
     <div className="overflow-hidden">
@@ -158,6 +160,7 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
                 onClick={() => {
                   table.setRowSelection({ [row.id]: true });
+                  router.push(`?id=${row.getValue("id")}`);
                 }}
               >
                 {row.getVisibleCells().map((cell) => (
