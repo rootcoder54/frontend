@@ -35,13 +35,27 @@ interface DataTableProps<TData, TValue> {
     name: string;
     icon: React.ReactNode;
     lien: string;
-    className?: string;
+    className?:
+      | "link"
+      | "default"
+      | "destructive"
+      | "outline"
+      | "secondary"
+      | "ghost"
+      | null;
   }[];
   selectlinks?: {
     name: string;
     icon: React.ReactNode;
     lien: string;
-    className?: string;
+    className?:
+      | "link"
+      | "default"
+      | "destructive"
+      | "outline"
+      | "secondary"
+      | "ghost"
+      | null;
   }[];
   hideList?: string[];
 }
@@ -107,7 +121,6 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="overflow-hidden">
-      {/*id*/}
       <div>
         <DataToolBar
           table={table}

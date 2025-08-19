@@ -1,7 +1,7 @@
 "use client";
 import { DataTable } from "@/components/datatables";
 import { buildColumns } from "@/components/datatables/columns";
-import { Delete, Edit2, PlusIcon } from "lucide-react";
+import { FilePenLine, PlusIcon, Trash2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getProduits } from "@/action/produits/getProduits";
 import { getToken } from "@/lib/getToken";
@@ -36,16 +36,21 @@ const PageTest = () => {
           {
             name: "Ajouter",
             icon: <PlusIcon />,
-            lien: "/add"
+            lien: "/add",
           }
         ]}
         selectlinks={[
-          { name: "editer", icon: <Edit2 />, lien: "person/edite" },
           {
-            name: "delete",
-            icon: <Delete />,
+            name: "Editer",
+            icon: <FilePenLine />,
+            lien: "person/edite",
+            className: "ghost"
+          },
+          {
+            name: "Supprimer",
+            icon: <Trash2 />,
             lien: "/person/delete",
-            className: "bg-red-600 hover:bg-red-500"
+            className: "ghost"
           }
         ]}
         hideList={[

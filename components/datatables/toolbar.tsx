@@ -18,13 +18,27 @@ interface DataTableToolbarProps<TData> {
     name: string;
     icon: React.ReactNode;
     lien: string;
-    className?: string;
+    className?:
+      | "link"
+      | "default"
+      | "destructive"
+      | "outline"
+      | "secondary"
+      | "ghost"
+      | null;
   }[];
   selectlinks?: {
     name: string;
     icon: React.ReactNode;
     lien: string;
-    className?: string;
+    className?:
+      | "link"
+      | "default"
+      | "destructive"
+      | "outline"
+      | "secondary"
+      | "ghost"
+      | null;
   }[];
 }
 
@@ -53,10 +67,10 @@ function DataToolBar<TData>({
   }, [selectedRowsData]);
 
   return (
-    <div className="flex items-center py-4">
-      <div className="flex flex-col items-center">
+    <div className="flex items-center py-4 w-full h-20">
+      <div className="flex flex-col items-center w-full">
         {table.getFilteredSelectedRowModel().rows.length == 0 ? (
-          <div className="flex items-center gap-3 py-2">
+          <div className="flex flex-row items-center justify-start w-full gap-3 py-2">
             <Input
               placeholder={`${
                 searchPlaceholder ? searchPlaceholder : "Filter"
@@ -87,19 +101,19 @@ function DataToolBar<TData>({
             {links &&
               links.map((link) => (
                 <Link key={link.lien} href={`${link.lien}/${id}`}>
-                  <Button className={link.className}>
+                  <Button variant={link.className}>
                     {link.icon} {link.name}
                   </Button>
                 </Link>
               ))}
           </div>
         ) : (
-          <div className="flex flex-row items-center justify-center gap-1 rounded-lg bg-zinc-300/30 px-4 py-2">
+          <div className="flex flex-row items-center justify-start w-full gap-x-1 rounded-lg bg-zinc-300/30 px-1 py-1">
             {selectlinks && (
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant={"outline"}
+                    variant={"ghost"}
                     size={"icon"}
                     className="size-8"
                     onClick={deselectRows}
@@ -112,12 +126,24 @@ function DataToolBar<TData>({
                 </TooltipContent>
               </Tooltip>
             )}
+            <span>1 sélectionné</span>
             {selectlinks &&
               selectlinks.map((link) => (
                 <Link key={link.lien} href={`${link.lien}/${id}`}>
-                  <Button className={link.className}>
-                    {link.icon} {link.name}
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant={link.className}
+                        size={"icon"}
+                        className="size-8"
+                      >
+                        {link.icon}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{link.name}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </Link>
               ))}
           </div>
