@@ -20,18 +20,9 @@ interface Payload {
 }
 export const getAuth = async () => {
   try {
-    const token = localStorage.getItem("token");
-    if (!token) return null;
-    const response = await fetch(`http://localhost:3000/api/auth/profile`, {
+    const response = await fetch("http://localhost:3000/api/auth/profile", {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "*/*",
-        "Accept-Encoding": "gzip, deflate, br",
-        Connection: "keep-alive",
-        Authorization: `Bearer ${token}`
-      }
-      //credentials: "include",
+      credentials: "include" // ⚡ renvoie automatiquement le cookie
     });
 
     if (!response.ok) {

@@ -6,19 +6,26 @@ import { useEffect } from "react";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { QueryProvider } from "@/components/provider/query-provider";
-import { ModalProvider } from "@/components/provider/modal-provider";
+import { useAuth } from "@/hooks/useAuth";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  //const { user, loading, login, logout } = useAuth();
   useEffect(() => {
-    getAuth().then((data) => {
+    /*getAuth().then((data) => {
       if (data === null) {
         router.push("/login");
       } else {
         console.log("Utilisateur connecté :", data.payload);
       }
-    });
+    });*/
+    /*if (user === null) {
+      router.push("/login");
+    } else {
+      console.log("Utilisateur connecté :", user);
+    }*/
   }, [router]);
+
   return (
     <QueryProvider>
       <SidebarProvider
