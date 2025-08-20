@@ -9,6 +9,7 @@ import { Produit } from "@/types/Produit";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { DeleteProduit } from "@/components/modals/delete-produit";
+import { EditeProduit } from "@/components/modals/edit-produit";
 
 const PageTest = () => {
   const [token, settoken] = useState("");
@@ -53,7 +54,7 @@ const PageTest = () => {
         ]}
         selectlinks={[
           {
-            btn: <DeleteProduit id={id} reload={refetch} />
+            btn: <EditeProduit id={id} />
           },
           {
             btn: <DeleteProduit id={id} reload={refetch} />
