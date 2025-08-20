@@ -31,7 +31,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       >
         <AppSidebar variant="inset" />
         <SidebarInset>{children}</SidebarInset>
-        <ModalProvider />
       </SidebarProvider>
     </QueryProvider>
   );

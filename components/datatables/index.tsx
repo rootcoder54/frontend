@@ -46,17 +46,7 @@ interface DataTableProps<TData, TValue> {
       | null;
   }[];
   selectlinks?: {
-    name: string;
-    icon: React.ReactNode;
-    action: (id: string) => void;
-    className?:
-      | "link"
-      | "default"
-      | "destructive"
-      | "outline"
-      | "secondary"
-      | "ghost"
-      | null;
+    btn: React.ReactNode;
   }[];
   hideList?: string[];
 }

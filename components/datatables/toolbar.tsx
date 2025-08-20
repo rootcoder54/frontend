@@ -3,8 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Table } from "@tanstack/react-table";
 import { X } from "lucide-react";
 
-import { useEffect, useState } from "react";
-
 import Link from "next/link";
 
 import { Input } from "@/components/ui/input";
@@ -28,17 +26,7 @@ interface DataTableToolbarProps<TData> {
       | null;
   }[];
   selectlinks?: {
-    name: string;
-    icon: React.ReactNode;
-    action: (id: string) => void;
-    className?:
-      | "link"
-      | "default"
-      | "destructive"
-      | "outline"
-      | "secondary"
-      | "ghost"
-      | null;
+    btn: React.ReactNode;
   }[];
 }
 
@@ -54,17 +42,6 @@ function DataToolBar<TData>({
     table.getState().rowSelection = {};
     table.setRowSelection({});
   };
-  const rowSelected = table.getState().rowSelection;
-  const [id, setId] = useState("");
-  const selectedRowsData = table
-    .getRowModel()
-    .rows.filter((row) => rowSelected[row.id]);
-  useEffect(() => {
-    selectedRowsData.forEach((row) => {
-      const rowData = row.original as { id: string & unknown };
-      setId(rowData.id);
-    });
-  }, [selectedRowsData]);
 
   return (
     <div className="flex items-center py-4 w-full h-20">
@@ -128,24 +105,8 @@ function DataToolBar<TData>({
             )}
             <span>1 sélectionné</span>
             {selectlinks &&
-              selectlinks.map((link) => (
-                <Tooltip key={link.name}>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant={link.className}
-                      size={"icon"}
-                      className="size-8"
-                      onClick={() => {
-                        link.action(id);
-                      }}
-                    >
-                      {link.icon}
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{link.name}</p>
-                  </TooltipContent>
-                </Tooltip>
+              selectlinks.map((link, index) => (
+                <div key={index}>{link.btn}</div>
               ))}
           </div>
         )}

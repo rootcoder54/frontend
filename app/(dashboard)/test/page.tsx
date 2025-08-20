@@ -1,14 +1,14 @@
 "use client";
 import { DataTable } from "@/components/datatables";
 import { buildColumns } from "@/components/datatables/columns";
-import { FilePenLine, PlusIcon, Trash2 } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getProduits } from "@/action/produits/getProduits";
 import { getToken } from "@/lib/getToken";
 import { Produit } from "@/types/Produit";
 import { useEffect, useState } from "react";
-import { useDeleteProduitModal } from "@/hooks/modals/produit/useDeleteProduit";
 import { useSearchParams } from "next/navigation";
+import { DeleteProduit } from "@/components/modals/delete-produit";
 
 const PageTest = () => {
   const [token, settoken] = useState("");
@@ -16,14 +16,13 @@ const PageTest = () => {
   useEffect(() => {
     settoken(getToken());
   }, []);
-  const { data: produits } = useQuery<Produit[]>({
+  const { data: produits, refetch } = useQuery<Produit[]>({
     queryKey: ["produit"],
     queryFn: async () => {
       const data = await getProduits(token);
       return data;
     }
   });
-  const deleteProduit = useDeleteProduitModal();
 
   const searchParams = useSearchParams();
   const search = searchParams.get("id");
@@ -54,16 +53,10 @@ const PageTest = () => {
         ]}
         selectlinks={[
           {
-            name: "Editer",
-            icon: <FilePenLine />,
-            action: () => deleteProduit.onOpen(id),
-            className: "ghost"
+            btn: <DeleteProduit id={id} reload={refetch} />
           },
           {
-            name: "Supprimer",
-            icon: <Trash2 />,
-            action: () => deleteProduit.onOpen(id),
-            className: "ghost"
+            btn: <DeleteProduit id={id} reload={refetch} />
           }
         ]}
         hideList={[

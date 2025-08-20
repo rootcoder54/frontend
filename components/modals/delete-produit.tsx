@@ -9,16 +9,21 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
+  AlertDialogTitle,
+  AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
-import { useDeleteProduitModal } from "@/hooks/modals/produit/useDeleteProduit";
 import { getToken } from "@/lib/getToken";
 import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import { Trash2 } from "lucide-react";
 
-export function DeleteProduit() {
-  const id = useDeleteProduitModal((state) => state.id);
-  const isOpen = useDeleteProduitModal((state) => state.isOpen);
-  const onClose = useDeleteProduitModal((state) => state.onClose);
+export function DeleteProduit({
+  id,
+  reload
+}: {
+  id: string;
+  reload: () => void;
+}) {
   const [token, settoken] = useState("");
   useEffect(() => {
     settoken(getToken());
@@ -27,18 +32,23 @@ export function DeleteProduit() {
   const supprimer = () => {
     deleteProduit(id, token).then((result) => {
       console.log(result);
+      reload();
     });
   };
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={onClose}>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="ghost" size={"icon"}>
+          <Trash2 />
+        </Button>
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Êtes vous absolument sûr?</AlertDialogTitle>
           <AlertDialogDescription>
             Cette action est irreversible. Cet produit sera permanenment
             supprimé de votre compte.
-            {id}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
