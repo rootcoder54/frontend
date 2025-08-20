@@ -100,7 +100,7 @@ function DataToolBar<TData>({
             )}
             {links &&
               links.map((link) => (
-                <Link key={link.lien} href={`${link.lien}/${id}`}>
+                <Link key={link.lien} href={`${link.lien}`}>
                   <Button variant={link.className}>
                     {link.icon} {link.name}
                   </Button>
@@ -135,7 +135,9 @@ function DataToolBar<TData>({
                       variant={link.className}
                       size={"icon"}
                       className="size-8"
-                      onClick={() => link.action(id)}
+                      onClick={() => {
+                        link.action(id);
+                      }}
                     >
                       {link.icon}
                     </Button>

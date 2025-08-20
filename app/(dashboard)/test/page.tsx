@@ -49,7 +49,7 @@ const PageTest = () => {
           {
             name: "Ajouter",
             icon: <PlusIcon />,
-            lien: "/add"
+            lien: "/test/add"
           }
         ]}
         selectlinks={[

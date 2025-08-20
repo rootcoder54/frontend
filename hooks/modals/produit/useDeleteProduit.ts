@@ -8,7 +8,7 @@ type DeleteProduitModalStore = {
 };
 
 export const useDeleteProduitModal = create<DeleteProduitModalStore>((set) => ({
-  id:"",
+  id: "",
   isOpen: false,
   onOpen: (id: string) => set({ isOpen: true, id }),
   onClose: () => set({ isOpen: false, id: undefined })
