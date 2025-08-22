@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { Button } from "../ui/button";
 import { ArrowDown, ArrowUp, ChevronsUpDown } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 // Fonction générique pour le rendu
 const renderCell = (value: unknown) => {
@@ -26,14 +27,27 @@ const renderCell = (value: unknown) => {
   }
 
   if (typeof value === "string") {
+    const displayText = value.length > 30 ? value.slice(0, 30) + "..." : value;
     if (value.includes("@")) {
       return (
         <a href={`mailto:${value}`} className="text-blue-600 hover:underline">
-          {value}
+          {displayText}
         </a>
       );
     }
-    return <span>{value}</span>;
+    if (value.length < 30) {
+      return <span>{value}</span>;
+    }
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span>{displayText}</span>
+        </TooltipTrigger>
+        <TooltipContent className="w-[560px] p-4">
+          <p>{value}</p>
+        </TooltipContent>
+      </Tooltip>
+    );
   }
 
   return <span>-</span>;

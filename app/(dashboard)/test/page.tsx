@@ -50,7 +50,7 @@ const PageTest = () => {
         ]}
         selectlinks={[
           {
-            btn: <EditeProduit id={id} />
+            btn: <EditeProduit id={id} reload={refetch} />
           },
           {
             btn: <DeleteProduit id={id} reload={refetch} />

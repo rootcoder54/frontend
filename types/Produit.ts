@@ -4,4 +4,7 @@ export type Produit = {
   description: string;
   prix: number;
   quantite: number;
+  categorieId: string;
+  fournisseurId: string;
+  shopId: string;
 };
