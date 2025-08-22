@@ -12,8 +12,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
-import { getToken } from "@/lib/getToken";
-import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Trash2 } from "lucide-react";
 
@@ -24,13 +22,8 @@ export function DeleteProduit({
   id: string;
   reload: () => void;
 }) {
-  const [token, settoken] = useState("");
-  useEffect(() => {
-    settoken(getToken());
-  }, []);
-
   const supprimer = () => {
-    deleteProduit(id, token).then((result) => {
+    deleteProduit(id).then((result) => {
       console.log(result);
       reload();
     });

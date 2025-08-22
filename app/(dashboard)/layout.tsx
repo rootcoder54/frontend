@@ -1,16 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { QueryProvider } from "@/components/provider/query-provider";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
-  useEffect(() => {
-    
-  }, [router]);
 
   return (
     <QueryProvider>

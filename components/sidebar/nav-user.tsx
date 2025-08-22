@@ -24,38 +24,24 @@ import {
   SidebarMenuItem,
   useSidebar
 } from "@/components/ui/sidebar";
-import { useEffect, useState } from "react";
-import { getAuth } from "@/lib/isAuth";
+import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const [user, setuser] = useState<{
-    name: string;
-    username: string;
-    avatar: string;
-  }>({
-    name: "",
-    username: "",
-    avatar: ""
-  });
-  useEffect(() => {
-    getAuth().then((data) => {
-      if (data === null) {
-        return null;
-      } else {
-        setuser((prevUser) => ({
-          ...prevUser,
-          name: `${
-            data.user.firstName ? data.user.firstName : "Fofana"
-          } ${
-            data.user.lastName ? data.user.lastName : "Bassirou"
-          }`,
-          username: data.user.username,
-          avatar: ""
-        }));
-      }
-    });
-  }, []);
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  if (!user) {
+    return <span>En cours</span>;
+  }
+
+  const handleLogout = () => {
+    logout().then(() => console.log("Deconnecter"));
+    router.push("/login");
+  };
+  console.log("gggggggg", user);
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -66,13 +52,15 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarImage src={user.username} alt={user.username} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium">
+                  {user.username} Fofana
+                </span>
                 <span className="text-muted-foreground truncate text-xs">
-                  {user.username}
+                  {user.username} {user.lastName}
                 </span>
               </div>
               <IconDotsVertical className="ml-auto size-4" />
@@ -87,13 +75,13 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage src={user.username} alt={user.username} />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
+                  <span className="truncate font-medium">{user.username}</span>
                   <span className="text-muted-foreground truncate text-xs">
-                    {user.username}
+                    {user.firstName} {user.lastName}
                   </span>
                 </div>
               </div>
@@ -114,9 +102,9 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
               <IconLogout />
-              Log out
+              Deconnecter
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
