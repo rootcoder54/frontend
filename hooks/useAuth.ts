@@ -2,12 +2,15 @@
 import { useState, useEffect, useCallback } from "react";
 
 type User = {
-  id: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  roleId: string;
-  shopId?: string;
+  userId: string;
+  user: {
+    id: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+    roleId: string;
+    shopId?: string;
+  };
 };
 
 export function useAuth() {
