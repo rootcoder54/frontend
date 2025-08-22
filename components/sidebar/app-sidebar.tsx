@@ -21,43 +21,55 @@ import {
 } from "@/components/ui/sidebar";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
-
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg"
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      icon: IconDashboard
-    },
-    {
-      title: "Lifecycle",
-      url: "#",
-      icon: IconListDetails
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: IconUsers
-    }
-  ]
-};
+import { usePathname } from "next/navigation";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+  const data = {
+    user: {
+      name: "shadcn",
+      email: "m@example.com",
+      avatar: "/avatars/shadcn.jpg"
+    },
+    navMain: [
+      {
+        title: "Dashboard",
+        url: "/",
+        icon: IconChartBar,
+        isSelect: false
+      },
+      {
+        title: "Test",
+        url: "/test",
+        icon: IconDashboard,
+        isSelect: pathname.startsWith("/test")
+      },
+      {
+        title: "Lifecycle",
+        url: "#",
+        icon: IconListDetails,
+        isSelect: false
+      },
+      {
+        title: "Analytics",
+        url: "#",
+        icon: IconChartBar,
+        isSelect: false
+      },
+      {
+        title: "Projects",
+        url: "#",
+        icon: IconFolder,
+        isSelect: false
+      },
+      {
+        title: "Team",
+        url: "#",
+        icon: IconUsers,
+        isSelect: false
+      }
+    ]
+  };
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>

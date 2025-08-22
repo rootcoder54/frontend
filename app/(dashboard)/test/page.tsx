@@ -12,6 +12,7 @@ import { EditeProduit } from "@/components/modals/edit-produit";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const PageTest = () => {
   const [id, setId] = useState("");
@@ -84,6 +85,9 @@ const PageTest = () => {
             },
             {
               btn: <DeleteProduit id={id} reload={refetch} />
+            },
+            {
+              btn: <Link href={`/test/${id}`}>Details</Link>
             }
           ]}
           hideList={[
