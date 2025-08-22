@@ -46,11 +46,11 @@ export function NavUser() {
         setuser((prevUser) => ({
           ...prevUser,
           name: `${
-            data.payload.user.firstName ? data.payload.user.firstName : "Fofana"
+            data.user.firstName ? data.user.firstName : "Fofana"
           } ${
-            data.payload.user.lastName ? data.payload.user.lastName : "Bassirou"
+            data.user.lastName ? data.user.lastName : "Bassirou"
           }`,
-          username: data.payload.user.username,
+          username: data.user.username,
           avatar: ""
         }));
       }

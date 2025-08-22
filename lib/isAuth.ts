@@ -29,7 +29,8 @@ export const getAuth = async () => {
       return null;
     }
 
-    const data = (await response.json()) as { payload: Payload };
+    const data: Payload = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error during login:", error);

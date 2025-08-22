@@ -4,7 +4,6 @@ import { buildColumns } from "@/components/datatables/columns";
 import { PlusIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getProduits } from "@/action/produits/getProduits";
-import { getToken } from "@/lib/getToken";
 import { Produit } from "@/types/Produit";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -12,15 +11,12 @@ import { DeleteProduit } from "@/components/modals/delete-produit";
 import { EditeProduit } from "@/components/modals/edit-produit";
 
 const PageTest = () => {
-  const [token, settoken] = useState("");
   const [id, setId] = useState("");
-  useEffect(() => {
-    settoken(getToken());
-  }, []);
+
   const { data: produits, refetch } = useQuery<Produit[]>({
     queryKey: ["produit"],
     queryFn: async () => {
-      const data = await getProduits(token);
+      const data = await getProduits();
       return data;
     }
   });
