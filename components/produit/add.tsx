@@ -36,9 +36,10 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Fournisseur } from "@/types/Fournisseur";
 import { getFournisseurs } from "@/action/fournisseur/getFournisseurs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AddProduitFn } from "@/action/produits/addProduit";
 import { useRouter } from "next/navigation";
+import { FileUpload } from "../ui/file-upload";
 
 const formSchema = z.object({
   nom: z.string().min(1, {
@@ -59,6 +60,11 @@ const formSchema = z.object({
 });
 
 export function AddProduit() {
+  const [files, setFiles] = useState<File[]>([]);
+  const handleFileUpload = (files: File[]) => {
+    setFiles(files);
+    console.log(files);
+  };
   const { user } = useAuth();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -108,7 +114,7 @@ export function AddProduit() {
       values.fournisseurId,
       values.shopId
     ).then((data) => {
-      console.log(data);
+      console.log(data, files);
       router.push("/test");
     });
   }
@@ -180,6 +186,7 @@ export function AddProduit() {
             </FormItem>
           )}
         />
+        <FileUpload onChange={handleFileUpload} />
         <FormField
           control={form.control}
           name="categorieId"
