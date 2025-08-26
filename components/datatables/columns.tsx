@@ -4,10 +4,22 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Button } from "../ui/button";
-import { ArrowDown, ArrowUp, ChevronsUpDown } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronsUpDown, FileImage } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import Image from "next/image";
 
+const isImageUrl = (url: string) => {
+  return /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(url);
+};
+function isValidUrl(value: string): boolean {
+  try {
+    new URL(value);
+    return true;
+  } catch {
+    return false;
+  }
+}
 // Fonction générique pour le rendu
 const renderCell = (value: unknown) => {
   if (typeof value === "boolean") {
@@ -27,6 +39,20 @@ const renderCell = (value: unknown) => {
   }
 
   if (typeof value === "string") {
+    if (isImageUrl(value)) {
+      if (!isValidUrl(value)) {
+        return <FileImage />;
+      }
+      return (
+        <Image
+          src={value}
+          alt={value}
+          width={60}
+          height={60}
+          className="object-cover rounded-md"
+        />
+      );
+    }
     const displayText = value.length > 30 ? value.slice(0, 30) + "..." : value;
     if (value.includes("@")) {
       return (

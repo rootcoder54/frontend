@@ -13,6 +13,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { getImageByProduit } from "@/action/produits/getImageByProduit";
 
 const PageTest = () => {
   const [id, setId] = useState("");
@@ -21,7 +22,20 @@ const PageTest = () => {
     queryKey: ["produit"],
     queryFn: async () => {
       const data = await getProduits();
-      return data;
+      const updatedData = await Promise.all(
+        data.map(async (item) => {
+          const images = await getImageByProduit(item.id);
+          return {
+            ...item,
+            image:
+              images.length > 0
+                ? "http://localhost:3000/" + images[0].url
+                : null
+          };
+        })
+      );
+
+      return updatedData;
     }
   });
 
