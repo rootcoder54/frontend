@@ -4,6 +4,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/features/spinner";
 
 export default function Home() {
   return (
@@ -37,6 +38,7 @@ export default function Home() {
       </header>
       <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20">
         <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+          <Spinner />
           <Image
             className="dark:invert"
             src="/next.svg"
