@@ -40,6 +40,7 @@ import { useEffect, useState } from "react";
 import { AddProduitFn } from "@/action/produits/addProduit";
 import { useRouter } from "next/navigation";
 import { FileUpload } from "../ui/file-upload";
+import { AddImageFn } from "@/action/produits/addImage";
 
 const formSchema = z.object({
   nom: z.string().min(1, {
@@ -115,7 +116,16 @@ export function AddProduit() {
       values.shopId
     ).then((data) => {
       console.log(data, files);
-      router.push("/test");
+      if (files.length > 0) {
+        files.map((file) => {
+          AddImageFn(file, data.id).then((val) => {
+            console.log(val);
+            router.push("/test");
+          });
+        });
+      } else {
+        router.push("/test");
+      }
     });
   }
 

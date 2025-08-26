@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DeleteProduit } from "../modals/delete-produit";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -17,7 +16,7 @@ export const ModalProvider = () => {
 
   return (
     <>
-      <DeleteProduit />
+      <span>dddd</span>
     </>
   );
 };

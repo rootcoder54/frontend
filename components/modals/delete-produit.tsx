@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "../ui/button";
 import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function DeleteProduit({
   id,
@@ -22,10 +23,12 @@ export function DeleteProduit({
   id: string;
   reload: () => void;
 }) {
+  const router = useRouter();
   const supprimer = () => {
     deleteProduit(id).then((result) => {
       console.log(result);
       reload();
+      router.replace("/test");
     });
   };
 

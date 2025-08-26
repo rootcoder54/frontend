@@ -1,3 +1,5 @@
+import { Produit } from "@/types/Produit";
+
 export const AddProduitFn = async (
   nom: string,
   description: string,
@@ -26,5 +28,5 @@ export const AddProduitFn = async (
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
-  return response.json();
+  return response.json() as Promise<Produit>;
 };

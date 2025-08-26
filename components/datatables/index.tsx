@@ -24,11 +24,12 @@ import {
 } from "@/components/ui/table";
 import React from "react";
 import DataToolBar from "./toolbar";
-import { useRouter } from "next/navigation";
+import { DataTablePagination } from "./PaginationTable";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  onRowSelect?: (id: string) => void;
   notData?: string;
   searchId?: string;
   searchPlaceholder?: string;
@@ -54,6 +55,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  onRowSelect,
   notData,
   searchId,
   searchPlaceholder,
@@ -88,18 +90,7 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: (updater) => {
-      setRowSelection((prev) => {
-        const newSelection =
-          typeof updater === "function" ? updater(prev) : updater;
-        const selectedRowIds = Object.keys(newSelection);
-        if (selectedRowIds.length > 0) {
-          const lastSelected = selectedRowIds[selectedRowIds.length - 1];
-          return { [lastSelected]: true };
-        }
-        return {};
-      });
-    },
+    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
@@ -109,7 +100,6 @@ export function DataTable<TData, TValue>({
   });
 
   //const columnsf = React.useMemo(() => buildColumns(data), [data]);
-  const router = useRouter();
 
   return (
     <div className="overflow-hidden">
@@ -150,7 +140,8 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
                 onClick={() => {
                   table.setRowSelection({ [row.id]: true });
-                  router.push(`?id=${row.getValue("id")}`);
+                  const selectedId = row.getValue("id") as string;
+                  if (onRowSelect) onRowSelect(selectedId); // ✅ safe
                 }}
               >
                 {row.getVisibleCells().map((cell) => (
@@ -169,6 +160,7 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      <DataTablePagination table={table} />
     </div>
   );
 }

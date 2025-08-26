@@ -1,11 +1,11 @@
-export const AddImageFn = async (url: string, produitId: string) => {
+export const AddImageFn = async (file: File, produitId: string) => {
   const formData = new FormData();
-  formData.append("image", url); // ici c'est un File
+  formData.append("image", file); // ✅ ici on envoie un File
   formData.append("produitId", produitId);
 
   const res = await fetch("http://localhost:3000/api/images/", {
     method: "POST",
-    body: formData, // pas de headers Content-Type, c'est géré automatiquement
+    body: formData, // ✅ FormData gère les headers automatiquement
     credentials: "include"
   });
 

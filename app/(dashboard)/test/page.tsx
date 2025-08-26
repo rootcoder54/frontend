@@ -5,8 +5,7 @@ import { PlusIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getProduits } from "@/action/produits/getProduits";
 import { Produit } from "@/types/Produit";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { DeleteProduit } from "@/components/modals/delete-produit";
 import { EditeProduit } from "@/components/modals/edit-produit";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -16,8 +15,7 @@ import Link from "next/link";
 import { getImageByProduit } from "@/action/produits/getImageByProduit";
 
 const PageTest = () => {
-  const [id, setId] = useState("");
-
+  const [selectedId, setSelectedId] = useState<string>("");
   const { data: produits, refetch } = useQuery<Produit[]>({
     queryKey: ["produit"],
     queryFn: async () => {
@@ -39,17 +37,12 @@ const PageTest = () => {
     }
   });
 
-  const searchParams = useSearchParams();
-  const search = searchParams.get("id");
-  useEffect(() => {
-    if (search) {
-      setId(search);
-    }
-  }, [search, id]);
-
+  const reload = () => {
+    refetch();
+    setSelectedId("");
+  };
   if (!produits) return <span>En cours</span>;
   const columns = buildColumns(produits);
-  console.log(produits);
 
   return (
     <div>
@@ -80,12 +73,14 @@ const PageTest = () => {
           </div>
         </div>
       </header>
+      <div className="px-7">ID sélectionné : {selectedId}</div>
       <div className="px-7">
         <DataTable
           columns={columns}
           data={produits}
           searchId="nom"
           searchPlaceholder="Rechercher le nom"
+          onRowSelect={(id) => setSelectedId(id)}
           links={[
             {
               name: "Ajouter",
@@ -95,13 +90,13 @@ const PageTest = () => {
           ]}
           selectlinks={[
             {
-              btn: <EditeProduit id={id} reload={refetch} />
+              btn: <EditeProduit id={selectedId} reload={reload} />
             },
             {
-              btn: <DeleteProduit id={id} reload={refetch} />
+              btn: <DeleteProduit id={selectedId} reload={reload} />
             },
             {
-              btn: <Link href={`/test/${id}`}>Details</Link>
+              btn: <Link href={`/test/${selectedId}`}>Details</Link>
             }
           ]}
           hideList={[
