@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/form";
 import { useEffect, useState } from "react";
 import { EditeProduitFn } from "@/action/produits/editerProduit";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   nom: z.string().min(1, {
@@ -78,7 +79,6 @@ export function EditeProduit({
   }, [produit, form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     if (produit) {
       EditeProduitFn(
         id,
@@ -90,7 +90,7 @@ export function EditeProduit({
         produit.fournisseurId,
         produit.shopId
       ).then((data) => {
-        console.log(data);
+        toast.success(`Produit ${data.nom} modifié`);
         reload();
         setOpen(false);
       });
@@ -105,7 +105,7 @@ export function EditeProduit({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px] md:max-w-[725px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Edité le produit</DialogTitle>
           <DialogDescription>
             Make changes to your profile here. Click save when you&apos;re done.{" "}
           </DialogDescription>

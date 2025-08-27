@@ -72,7 +72,6 @@ const PageTest = () => {
           </div>
         </div>
       </header>
-      {selectedId}
       <div className="px-7">
         <DataTable
           data={produits}

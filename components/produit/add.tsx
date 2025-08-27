@@ -41,6 +41,7 @@ import { AddProduitFn } from "@/action/produits/addProduit";
 import { useRouter } from "next/navigation";
 import { FileUpload } from "../ui/file-upload";
 import { AddImageFn } from "@/action/produits/addImage";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   nom: z.string().min(1, {
@@ -105,7 +106,6 @@ export function AddProduit() {
   }, [user, form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     AddProduitFn(
       values.nom,
       values.description,
@@ -120,10 +120,12 @@ export function AddProduit() {
         files.map((file) => {
           AddImageFn(file, data.id).then((val) => {
             console.log(val);
+            toast.success(`Produit ${data.nom} ajouter avec succes`);
             router.push("/test");
           });
         });
       } else {
+        toast.success(`Produit ${data.nom} ajouter avec succes`);
         router.push("/test");
       }
     });

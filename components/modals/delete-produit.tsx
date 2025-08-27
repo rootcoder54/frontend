@@ -15,6 +15,7 @@ import {
 import { Button } from "../ui/button";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function DeleteProduit({
   id,
@@ -27,6 +28,7 @@ export function DeleteProduit({
   const supprimer = () => {
     deleteProduit(id).then((result) => {
       console.log(result);
+      toast.success(`Produit ${result.produit.nom} supprimer`);
       reload();
       router.replace("/test");
     });
