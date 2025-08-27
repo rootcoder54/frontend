@@ -105,7 +105,6 @@ export function DataTable<TData extends Record<string, unknown>>({
       if (onRowSelect) onRowSelect(selectedId);
     }
   }, [rowSelection, table, onRowSelect]);
-  //const columnsf = React.useMemo(() => buildColumns(data), [data]);
 
   return (
     <div className="overflow-hidden">
