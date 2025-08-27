@@ -1,6 +1,5 @@
 "use client";
 import { DataTable } from "@/components/datatables";
-import { buildColumns } from "@/components/datatables/columns";
 import { PlusIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getProduits } from "@/action/produits/getProduits";
@@ -13,6 +12,8 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getImageByProduit } from "@/action/produits/getImageByProduit";
+import { BACKEND_URL } from "@/types/constant";
+import { Spinner } from "@/components/features/spinner";
 
 const PageTest = () => {
   const [selectedId, setSelectedId] = useState<string>("");
@@ -25,10 +26,7 @@ const PageTest = () => {
           const images = await getImageByProduit(item.id);
           return {
             ...item,
-            image:
-              images.length > 0
-                ? "http://localhost:3000/" + images[0].url
-                : null
+            image: images.length > 0 ? BACKEND_URL + "/" + images[0].url : null
           };
         })
       );
@@ -37,12 +35,13 @@ const PageTest = () => {
     }
   });
 
-  const reload = () => {
-    refetch();
-    setSelectedId("");
-  };
-  if (!produits) return <span>En cours</span>;
-  const columns = buildColumns(produits);
+  if (!produits)
+    return (
+      <div className="min-h-screen flex flex-row items-center justify-center">
+        {" "}
+        <Spinner />
+      </div>
+    );
 
   return (
     <div>
@@ -73,10 +72,9 @@ const PageTest = () => {
           </div>
         </div>
       </header>
-      <div className="px-7">ID sélectionné : {selectedId}</div>
+      {selectedId}
       <div className="px-7">
         <DataTable
-          columns={columns}
           data={produits}
           searchId="nom"
           searchPlaceholder="Rechercher le nom"
@@ -90,10 +88,10 @@ const PageTest = () => {
           ]}
           selectlinks={[
             {
-              btn: <EditeProduit id={selectedId} reload={reload} />
+              btn: <EditeProduit id={selectedId} reload={refetch} />
             },
             {
-              btn: <DeleteProduit id={selectedId} reload={reload} />
+              btn: <DeleteProduit id={selectedId} reload={refetch} />
             },
             {
               btn: <Link href={`/test/${selectedId}`}>Details</Link>

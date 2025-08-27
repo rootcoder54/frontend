@@ -3,9 +3,30 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { QueryProvider } from "@/components/provider/query-provider";
+import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { LOGOUT_URL } from "@/types/constant";
+import { Spinner } from "@/components/features/spinner";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
+  useEffect(() => {
+    if (!user && !loading) {
+      router.replace(LOGOUT_URL);
+    }
+  }, [user, router, loading]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-row items-center justify-center">
+        {" "}
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <QueryProvider>
       <SidebarProvider

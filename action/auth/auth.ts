@@ -1,3 +1,5 @@
+import { BACKEND_URL } from "@/types/constant";
+
 interface Payload {
   userId: string;
   user: {
@@ -20,7 +22,7 @@ interface Payload {
 }
 export const getAuth = async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/auth/profile", {
+    const response = await fetch(`${BACKEND_URL}/api/auth/profile`, {
       method: "GET",
       credentials: "include" // ⚡ renvoie automatiquement le cookie
     });

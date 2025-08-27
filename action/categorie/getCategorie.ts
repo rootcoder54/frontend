@@ -1,5 +1,7 @@
+import { BACKEND_URL } from "@/types/constant";
+
 export const getCategories = async () => {
-  const response = await fetch("http://localhost:3000/api/categories", {
+  const response = await fetch(`${BACKEND_URL}/api/categories`, {
     method: "GET",
     credentials: "include"
   });

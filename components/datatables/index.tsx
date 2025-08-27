@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ColumnDef,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -22,12 +21,12 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
-import React from "react";
+import React, { useEffect } from "react";
 import DataToolBar from "./toolbar";
 import { DataTablePagination } from "./PaginationTable";
+import { buildColumns } from "./columns";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+interface DataTableProps<TData extends Record<string, unknown>> {
   data: TData[];
   onRowSelect?: (id: string) => void;
   notData?: string;
@@ -52,8 +51,7 @@ interface DataTableProps<TData, TValue> {
   hideList?: string[];
 }
 
-export function DataTable<TData, TValue>({
-  columns,
+export function DataTable<TData extends Record<string, unknown>>({
   data,
   onRowSelect,
   notData,
@@ -62,12 +60,13 @@ export function DataTable<TData, TValue>({
   links,
   selectlinks,
   hideList = []
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const columns = buildColumns(data);
 
   const initialVisibility: VisibilityState = hideList.reduce(
     (acc, key) => ({ ...acc, [key]: false }),
@@ -99,6 +98,13 @@ export function DataTable<TData, TValue>({
     }
   });
 
+  useEffect(() => {
+    const selectedRows = table.getSelectedRowModel().rows;
+    if (selectedRows.length > 0) {
+      const selectedId = selectedRows[0].getValue("id") as string;
+      if (onRowSelect) onRowSelect(selectedId);
+    }
+  }, [rowSelection, table, onRowSelect]);
   //const columnsf = React.useMemo(() => buildColumns(data), [data]);
 
   return (
@@ -112,10 +118,10 @@ export function DataTable<TData, TValue>({
           links={links}
         />
       </div>
-      <Table className="border-y">
-        <TableHeader className="bg-zinc-600/20">
+      <Table className="border-y w-full">
+        <TableHeader className="bg-zinc-600/10">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="w-full">
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
@@ -136,12 +142,12 @@ export function DataTable<TData, TValue>({
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                className="cursor-pointer"
+                className="cursor-pointer w-full"
                 data-state={row.getIsSelected() && "selected"}
                 onClick={() => {
                   table.setRowSelection({ [row.id]: true });
                   const selectedId = row.getValue("id") as string;
-                  if (onRowSelect) onRowSelect(selectedId); // ✅ safe
+                  if (onRowSelect) onRowSelect(selectedId);
                 }}
               >
                 {row.getVisibleCells().map((cell) => (

@@ -1,7 +1,8 @@
+import { BACKEND_URL } from "@/types/constant";
 import { Image } from "@/types/Image";
 
 export const getImageByProduit = async (id: string) => {
-  const response = await fetch(`http://localhost:3000/api/images/produits/${id}`, {
+  const response = await fetch(`${BACKEND_URL}/api/images/produits/${id}`, {
     method: "GET",
     credentials: "include"
   });

@@ -1,3 +1,4 @@
+import { BACKEND_URL } from "@/types/constant";
 import { Produit } from "@/types/Produit";
 
 export const AddProduitFn = async (
@@ -9,7 +10,7 @@ export const AddProduitFn = async (
   fournisseurId: string,
   shopId: string
 ) => {
-  const response = await fetch(`http://localhost:3000/api/produits/`, {
+  const response = await fetch(`${BACKEND_URL}/api/produits/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
