@@ -59,6 +59,8 @@ export function useAuth() {
         }
 
         await fetchProfile(); // récupère les infos après login
+        const data = await res.json();
+        return data;
       } catch (err) {
         console.log(err);
       }

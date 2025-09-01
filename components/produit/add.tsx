@@ -36,12 +36,13 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Fournisseur } from "@/types/Fournisseur";
 import { getFournisseurs } from "@/action/fournisseur/getFournisseurs";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { AddProduitFn } from "@/action/produits/addProduit";
 import { useRouter } from "next/navigation";
 import { FileUpload } from "../ui/file-upload";
 import { AddImageFn } from "@/action/produits/addImage";
 import { toast } from "sonner";
+import { Spinner } from "../features/spinner";
 
 const formSchema = z.object({
   nom: z.string().min(1, {
@@ -69,6 +70,7 @@ export function AddProduit() {
   };
   const { user } = useAuth();
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -106,29 +108,40 @@ export function AddProduit() {
   }, [user, form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    AddProduitFn(
-      values.nom,
-      values.description,
-      values.prix,
-      values.quantite,
-      values.categorieId,
-      values.fournisseurId,
-      values.shopId
-    ).then((data) => {
-      console.log(data, files);
-      if (files.length > 0) {
-        files.map((file) => {
-          AddImageFn(file, data.id).then((val) => {
-            console.log(val);
-            toast.success(`Produit ${data.nom} ajouter avec succes`);
-            router.push("/test");
+    startTransition(() => {
+      AddProduitFn(
+        values.nom,
+        values.description,
+        values.prix,
+        values.quantite,
+        values.categorieId,
+        values.fournisseurId,
+        values.shopId
+      ).then((data) => {
+        console.log(data, files);
+        if (files.length > 0) {
+          files.map((file) => {
+            AddImageFn(file, data.id).then((val) => {
+              console.log(val);
+              toast.success(`Produit ${data.nom} ajouter avec succes`);
+              router.push("/test");
+            });
           });
-        });
-      } else {
-        toast.success(`Produit ${data.nom} ajouter avec succes`);
-        router.push("/test");
-      }
+        } else {
+          toast.success(`Produit ${data.nom} ajouter avec succes`);
+          router.push("/test");
+        }
+      });
     });
+  }
+
+  if (isPending) {
+    return (
+      <div className="min-h-screen flex flex-row items-center justify-center">
+        {" "}
+        <Spinner />
+      </div>
+    );
   }
 
   return (

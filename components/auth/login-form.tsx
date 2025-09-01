@@ -56,12 +56,11 @@ export function LoginForm({
     setError("");
     startTransition(() => {
       login(values.username, values.password).then((data) => {
-        console.log(data);
-        if (data) {
-          setError("Email or password is incorrect.");
-        } else {
-          console.log("Login successful");
-          console.log("Token received:", data);
+        const { error, token } = data as { error?: string; token?: string };
+        if (error) {
+          setError(error);
+        }
+        if (token) {
           router.push("/");
         }
       });
@@ -77,72 +76,75 @@ export function LoginForm({
     }
   };
 
+  if (isPending) {
+    return (
+      <div className={cn("flex flex-col gap-6", className)} {...props}>
+        <CardHeader className="text-center flex flex-col items-center justify-center p-9">
+          <CardTitle className="text-xl">Connexion</CardTitle>
+          <Spinner />
+        </CardHeader>
+      </div>
+    );
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="shadow-md w-[450px] md:w-[800px] max-w-md">
-        {isPending && (
-          <CardHeader className="text-center flex flex-col items-center justify-center p-9">
-            <CardTitle className="text-xl">Connexion</CardTitle>
-            <Spinner />
+        <>
+          <CardHeader className="text-center">
+            <CardTitle className="text-xl">🔐 Bienvenue Sur Shoper</CardTitle>
+            <CardDescription></CardDescription>
           </CardHeader>
-        )}
-        {!isPending && (
-          <>
-            <CardHeader className="text-center">
-              <CardTitle className="text-xl">🔐 Bienvenue Sur Shoper</CardTitle>
-              <CardDescription></CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-6"
-                >
-                  <FormField
-                    control={form.control}
-                    name="username"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Username</FormLabel>
-                        <FormControl>
-                          <Input placeholder="bfof@gmail.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <Input type={typePassword} {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  {!isPending && (
-                    <div className="flex items-center justify-center gap-x-3">
-                      <Checkbox
-                        id="check"
-                        checked={showPassword}
-                        onCheckedChange={ckeckChange}
-                      />
-                      <label htmlFor="check">Afficher le mot de passe</label>
-                    </div>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                        <Input placeholder="bfof@gmail.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                  <FormError message={error} />
-                  <Button type="submit" size={"lg"} className="w-full">
-                    <span>Se connecter</span>
-                  </Button>
-                </form>
-              </Form>
-            </CardContent>
-          </>
-        )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type={typePassword} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {!isPending && (
+                  <div className="flex items-center justify-center gap-x-3">
+                    <Checkbox
+                      id="check"
+                      checked={showPassword}
+                      onCheckedChange={ckeckChange}
+                    />
+                    <label htmlFor="check">Afficher le mot de passe</label>
+                  </div>
+                )}
+                <FormError message={error} />
+                <Button type="submit" size={"lg"} className="w-full">
+                  <span>Se connecter</span>
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+        </>
       </Card>
     </div>
   );

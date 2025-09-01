@@ -27,7 +27,9 @@ export const login = async (username: string, password: string) => {
       return null;
     }
 
-    const data = (await response.json()) as { message: string; token: string };
+    const data = (await response.json()) as
+      | { error: string }
+      | { token: string };
     return data;
   } catch (error) {
     console.error("Error during login:", error);
