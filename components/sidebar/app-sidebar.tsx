@@ -26,17 +26,12 @@ import { usePathname } from "next/navigation";
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const data = {
-    user: {
-      name: "shadcn",
-      email: "m@example.com",
-      avatar: "/avatars/shadcn.jpg"
-    },
     navMain: [
       {
         title: "Dashboard",
         url: "/",
         icon: IconChartBar,
-        isSelect: false
+        isSelect: pathname === "/"
       },
       {
         title: "Test",
