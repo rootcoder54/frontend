@@ -86,6 +86,11 @@ export function DataTable<TData extends Record<string, unknown>>({
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 10
+      }
+    },
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
@@ -141,7 +146,7 @@ export function DataTable<TData extends Record<string, unknown>>({
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                className="cursor-pointer w-full"
+                className="cursor-pointer w-full h-8"
                 data-state={row.getIsSelected() && "selected"}
                 onClick={() => {
                   table.setRowSelection({ [row.id]: true });

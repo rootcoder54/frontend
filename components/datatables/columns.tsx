@@ -4,23 +4,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Button } from "../ui/button";
-import {
-  ArrowDown,
-  ArrowUp,
-  ChevronsUpDown,
-  FileImage,
-  MoreHorizontal
-} from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronsUpDown, FileImage } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
+
 import Image from "next/image";
 
 const isImageUrl = (url: string) => {
@@ -142,31 +129,6 @@ export function buildColumns<T extends Record<string, unknown>>(
       enableSorting: false,
       enableHiding: false
     },
-    ...dynamicCols,
-    {
-      id: "actions",
-      enableHiding: false,
-      cell: ({ row }) => {
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => {}}>
-                ID {row.getValue("id")}
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      }
-    }
+    ...dynamicCols
   ];
 }
